@@ -34,7 +34,8 @@ object Utils {
       mem: Int,
       cpus: Int,
       ports: Option[(Long, Long)] = None,
-      gpus: Int = 0): Offer = {
+      gpus: Int = 0,
+      attributes: List[Attribute] = List.empty): Offer = {
     val builder = Offer.newBuilder()
     builder.addResourcesBuilder()
       .setName("mem")
@@ -62,6 +63,7 @@ object Utils {
         .setValue("f1"))
       .setSlaveId(SlaveID.newBuilder().setValue(slaveId))
       .setHostname(s"host${slaveId}")
+    .addAllAttributes(attributes.asJava)
       .build()
   }
 
@@ -87,5 +89,19 @@ object Utils {
 
   def createTaskId(taskId: String): TaskID = {
     TaskID.newBuilder().setValue(taskId).build()
+  }
+
+  def createTextAttribute(name: String, value: String): Attribute = {
+    Attribute.newBuilder()
+    .setName(name)
+    .setType(Value.Type.TEXT)
+    .setText(Value.Text.newBuilder().setValue(value))
+    .build()
+  }
+
+  def verifyTaskNotLaunched(driver: SchedulerDriver, offerId: String): Unit = {
+    verify(driver, times(0)).launchTasks(
+      Matchers.eq(Collections.singleton(createOfferId(offerId))),
+      Matchers.any(classOf[java.util.Collection[TaskInfo]]))
   }
 }
