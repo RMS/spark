@@ -557,7 +557,8 @@ private[spark] class MesosClusterScheduler(
       val driverMem = submission.mem
       val driverConstraints =
         parseConstraintString(submission.conf.get("spark.mesos.driver.constraints", ""))
-      logTrace(s"Finding offer to launch driver with cpu: $driverCpu, mem: $driverMem constraints: $driverConstraints")
+      logTrace(s"Finding offer to launch driver with cpu: $driverCpu, mem: $driverMem")
+      logTrace(s"constraints: $driverConstraints")
       val offerOption = currentOffers.find { o =>
         getResource(o.resources, "cpus") >= driverCpu &&
         getResource(o.resources, "mem") >= driverMem &&
