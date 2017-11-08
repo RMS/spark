@@ -511,7 +511,7 @@ private[spark] class MesosClusterScheduler(
       var resources: JList[Resource],
       var attributes: JList[Attribute]) {
     override def toString(): String = {
-      s"Offer id: ${offerId} resources: ${resources}, attributes: $attributes"
+      s"Offer id: ${offerId}, resources: ${resources}, attributes: $attributes"
     }
   }
 
