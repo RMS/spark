@@ -451,8 +451,7 @@ private[spark] class MesosClusterScheduler(
     var options = Seq(
       "--name", desc.conf.get("spark.app.name"),
       "--master", s"mesos://${conf.get("spark.master")}",
-      "--driver-cores", desc.cores.toString,
-      "--driver-memory", s"${desc.mem * .8}M")
+      "--driver-cores", desc.cores.toString)
 
     logTrace(s"driver cmd options ${options.mkString(",")}")
 
