@@ -435,6 +435,7 @@ private[spark] class MesosClusterScheduler(
     val primaryResource = new File(sandboxPath, desc.jarUrl.split("/").last).toString()
     val appArguments = desc.command.arguments.mkString(" ")
 
+    logTrace(s"driver cmd value ($executable $cmdOptions $primaryResource $appArguments)")
     s"$executable $cmdOptions $primaryResource $appArguments"
   }
 
@@ -452,6 +453,8 @@ private[spark] class MesosClusterScheduler(
       "--master", s"mesos://${conf.get("spark.master")}",
       "--driver-cores", desc.cores.toString,
       "--driver-memory", s"${desc.mem * .8}M")
+
+    logTrace(s"driver cmd options ${options.mkString(",")}")
 
     // Assume empty main class means we're running python
     if (!desc.command.mainClass.equals("")) {
